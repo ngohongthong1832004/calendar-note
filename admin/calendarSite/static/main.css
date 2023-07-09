@@ -16,6 +16,7 @@
     padding-top: 4rem;
     font-family: 'Rubik Puddles', cursive;
     font-size: 4rem;
+    font-weight: 700;
 }
 .logout {
     position: fixed;
@@ -162,7 +163,7 @@
     border-radius:0.5rem ;
     font-weight: 600;
     border: none;
-    background-color: white;
+    background-color: rgb(253, 235, 235);
     box-shadow: 0 0 5px black;
 }
 .item-text {
@@ -177,7 +178,8 @@
     border-radius: 0.5rem;
     font-family: 'Dancing Script', cursive;
     font-size: 1.25rem;
-    background-color: white;
+    /* background-color: white; */
+    background-color: rgb(253, 235, 235);
     box-shadow: 0 0 5px black;  
 
 }
@@ -201,6 +203,29 @@
 .edit:hover {
     background-color: yellow;
     cursor: pointer;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+.btn-page{
+    margin: 0 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(250, 210, 217);
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+}
+.btn-page:hover {
+    background-color: rgb(255, 197, 207);
 }
 
 

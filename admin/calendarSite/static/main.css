@@ -1,0 +1,226 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main {
+    width: 100%;
+    min-height: 100vh;
+    text-align: center;
+    background-color: rgb(167, 214, 205);
+    padding-bottom: 4rem;
+}
+
+.title {
+    padding-top: 4rem;
+    font-family: 'Rubik Puddles', cursive;
+    font-size: 4rem;
+}
+.logout {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    font-family: 'Dancing Script', cursive;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    width: 6rem;
+    height: 2.75rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: rgb(250, 210, 217);
+    box-shadow: 0 0 5px black;
+}
+.logout:hover {
+    background-color: rgb(255, 197, 207);
+}
+.btn-alert {
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.bell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    width: 2rem;
+    margin-bottom: 0.5rem !important;
+    /* justify-self: center; */
+}
+.emoji {
+    font-size: 1rem;
+}
+/* .bell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2rem;
+    background-color: black;
+    transform: rotate(-45deg);
+} */
+.btnAdd {
+    margin: 1rem 0 ;
+    font-size: 1.5rem;
+    font-family: 'Dancing Script', cursive;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    width: 8rem;
+    height: 2.75rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: rgb(250, 210, 217);
+    box-shadow: 0 0 5px black;
+}
+.btnAdd:hover {
+    background-color: rgb(255, 197, 207);
+}
+
+.search{
+    position: relative;
+    width: 60%;
+    display: flex;
+    margin: auto;
+}
+.filter {
+    margin:1rem;
+    width: 7rem;
+    height: 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(250, 210, 217);
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+}
+.from-control {
+    width: 100%;
+    height: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0 5rem 0 1rem;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: 0 0 5px black;
+    height: 2rem;
+}
+
+.btnSearch {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    width: 4rem;
+    height: 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(250, 210, 217);
+    box-shadow: 0 0 5px black;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 600;
+}
+.btnSearch:hover {
+    background-color: rgb(255, 197, 207);
+}
+
+.wrap-list {
+    padding-top: 2rem;
+    width: 60%;
+    height: 100%;
+    margin: auto;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.item{
+    width: 100%;
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+.item button {
+    padding: 0.5rem;
+    margin: 0.25rem 0.25rem;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1rem;
+    border-radius:0.5rem ;
+    font-weight: 600;
+    border: none;
+    background-color: white;
+    box-shadow: 0 0 5px black;
+}
+.item-text {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.25rem 0.5rem;
+    margin: 0 0.5rem;
+    flex: 1;
+    height: 100%;
+    /* border: 1px solid black; */
+    border-radius: 0.5rem;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.25rem;
+    background-color: white;
+    box-shadow: 0 0 5px black;  
+
+}
+.wrap-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.date {
+    width: calc(100% - 0.5rem);
+    margin-bottom: 0.5rem !important;
+}
+.btn-option button {
+
+}
+.delete:hover {
+    background-color: red;
+    cursor: pointer;
+}
+.edit:hover {
+    background-color: yellow;
+    cursor: pointer;
+}
+
+
+@media (max-width : 666px) {
+    html{
+        font-size: 60%;
+    }
+    .search{
+        width: 95%;
+    }
+}
+@media (max-width : 1111px) {
+    html{
+        font-size: 90%;
+    }
+    .search{
+        width: 95%;
+    }
+    .wrap-list{
+        width: 95%;
+
+    }
+}

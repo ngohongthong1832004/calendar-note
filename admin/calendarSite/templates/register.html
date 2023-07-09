@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik+Puddles&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <div class="from-group">
+            <form action="" method="POST">
+                <h1 class="title" style="padding:0 0 1rem 0;"> Register </h1>
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username" class="form-control">
+                <input type="password" name="password" placeholder="Password" class="form-control">
+                <input type="password" name="password" placeholder="Confirm password" class="form-control">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+            <span class="text">You already have account?<a href="/login">Login</a></span>
+        </div>
+    </div>
+</body>
+</html>

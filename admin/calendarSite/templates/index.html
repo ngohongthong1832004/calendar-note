@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Note</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik+Puddles&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <h1 class="title"> Calendar Note </h1>
+        <h3 style="font-size: 2rem; padding: 1rem 0 ; font-family: 'Dancing Script', cursive;">Welcome USER, Have a good day ( ^^-^^ )</h3>
+        <button class="logout">Bye <span class="emoji">&#x1F622;</span></button>
+        <div class="content">
+            <button class="btnAdd"> Add note </button>
+
+            <div class="search">
+                <input class="from-control"  type="text" placeholder="Search..." >
+                <button class="btnSearch">Search</button>
+            </div>
+            
+            <button class="filter">Filler by Day</button>
+            <ul class="wrap-list">
+                <li class="item">
+                    <div class="btn-alert">
+                        <button class="bell">
+                            <span class="emoji">&#128276;</span>
+                        </button>
+                        <button>09:00</button>
+                    </div>
+                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
+                    <div class="wrap-btn">
+                        <button class="date">18/03/2024</button>
+                        <div class="btn-option">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="btn-alert">
+                        <button class="bell">
+                            <span class="emoji">&#128276;</span>
+                        </button>
+                        <button>09:00</button>
+                    </div>
+                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
+                    <div class="wrap-btn">
+                        <button class="date">18/03/2024</button>
+                        <div class="btn-option">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="btn-alert">
+                        <button class="bell">
+                            <span class="emoji">&#128276;</span>
+                        </button>
+                        <button>09:00</button>
+                    </div>
+                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
+                    <div class="wrap-btn">
+                        <button class="date">18/03/2024</button>
+                        <div class="btn-option">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="btn-alert">
+                        <button class="bell">
+                            <span class="emoji slash">&#x1F515;</span>
+                        </button>
+                        <button>09:00</button>
+                    </div>
+                    <span class="item-text">Learn Docker</span>
+                    <div class="wrap-btn">
+                        <button class="date">18/03/2024</button>
+                        <div class="btn-option">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="item">
+                    <div class="btn-alert">
+                        <button class="bell">
+                            <span class="emoji">&#128276;</span>
+                        </button>
+                        <button>09:00</button>
+                    </div>
+                    <span class="item-text">Learn SQL</span>
+                    <div class="wrap-btn">
+                        <button class="date">18/03/2024</button>
+                        <div class="btn-option">
+                            <button class="edit">Edit</button>
+                            <button class="delete">Delete</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

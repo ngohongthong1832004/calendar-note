@@ -52,6 +52,13 @@
     margin-bottom: 0.5rem !important;
     /* justify-self: center; */
 }
+.bell:hover {
+    background-color: rgb(255, 197, 207);
+    cursor: pointer;
+}
+.active {
+    background-color: rgb(255, 197, 207) !important;
+}
 .emoji {
     font-size: 1rem;
 }
@@ -101,6 +108,9 @@
     font-size: 1rem;
     font-family: 'Dancing Script', cursive;
     font-weight: 600;
+}
+.filter:hover {
+    background-color: rgb(255, 197, 207);
 }
 .from-control {
     width: 100%;
@@ -163,7 +173,7 @@
     border-radius:0.5rem ;
     font-weight: 600;
     border: none;
-    background-color: rgb(253, 235, 235);
+    background-color: rgb(253, 225, 225);
     box-shadow: 0 0 5px black;
 }
 .item-text {
@@ -179,7 +189,7 @@
     font-family: 'Dancing Script', cursive;
     font-size: 1.25rem;
     /* background-color: white; */
-    background-color: rgb(253, 235, 235);
+    background-color: rgb(253, 225, 225);
     box-shadow: 0 0 5px black;  
 
 }
@@ -193,8 +203,8 @@
     width: calc(100% - 0.5rem);
     margin-bottom: 0.5rem !important;
 }
-.btn-option button {
-
+.btn-option button a{
+    color: black;
 }
 .delete:hover {
     background-color: red;

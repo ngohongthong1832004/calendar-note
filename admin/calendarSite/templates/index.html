@@ -15,9 +15,15 @@
 </head>
 <body>
     <div class="main">
-        <h1 class="title"> Calendar Note </h1>
-        <h3 style="font-size: 2rem; padding: 1rem 0 ; font-family: 'Dancing Script', cursive;font-weight: 600">Welcome USER, Have a good day ( ^^-^^ )</h3>
-        <button class="logout">Bye <span class="emoji">&#x1F622;</span></button>
+        <h1 class="title"> Calendar  Note </h1>
+        <h3 style="font-size: 2rem; font-family: 'Dancing Script', cursive;font-weight: 600">Welcome {{user}}</h3> 
+        <h3 style="font-size: 1.8rem; padding:0 0 0.5rem 0 ; font-family: 'Dancing Script', cursive;font-weight: 600">Have a good day ( ^^-^^ )</h3>
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button class="logout">
+                Bye <span class="emoji">&#x1F622;</span>
+            </button>
+        </form>
         <div class="content">
             <button type="button" class="btn btnAdd" data-toggle="modal" data-target="#addNoteModal"> Add note </button>
 
@@ -31,14 +37,14 @@
                     </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="POST">
+                        <form onsubmit="validateForm(event)" action="{% url 'add-note' %}" method="POST">
                             {% csrf_token %}
                             <input type="text" name="content" placeholder="Write note content" class="form-control">
                             <input type="date" name="date" class="form-control"> 
                             <dic style="display: flex;">
                                 <div style="width: 50%;display: flex; justify-content: center; align-items: center;">
                                     <label for="" style="font-family: 'Dancing Script'; font-size : 2rem;margin-right: 0.5rem;">Alert</label> 
-                                    <input type = "checkbox" style="width: 2.5rem;" name="alert" value="alert"  class="form-control">
+                                    <input type = "checkbox" style="width: 2.5rem;" value="True" name="alert"  class="form-control" >
                                 </div>
                                 <div style="width: 50%;">
                                     <input type="time" name="time" class="form-control">
@@ -50,6 +56,27 @@
                             </div>
                         </form>
                     </div>
+                    <script>
+                        function validateForm(event) {
+                            event.preventDefault();
+                            const form = new FormData(event.target);
+                            const content = form.get('content');
+                            const date = form.get('date');
+                            const time = form.get('time');
+                            const alert_ = form.get('alert');
+                            if (content === '') {
+                                alert('Please enter content')
+                                return
+                            }
+                            if (alert_ === 'True'){
+                                if (time === '' || date === ''){
+                                    alert('Please enter date and time');
+                                    return
+                                }
+                            }
+                            event.target.submit();
+                        }
+                    </script>
                 </div>
                 </div>
             </div>
@@ -61,6 +88,9 @@
                 </div>
             </form>
             
+            <button  type="button" class="btn filter active">All</button>
+            <button  type="button" class="btn filter">Overdue</button>
+            <button  type="button" class="btn filter">Alert</button>
             <button  type="button" class="btn filter" data-toggle="modal" data-target="#filterModal">Filler by Day</button>
 
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="dilterLabel" aria-hidden="true">
@@ -75,7 +105,7 @@
                     <div class="modal-body">
                         <form action="" method="POST">
                             {% csrf_token %}
-                                <input type="time" name="time" class="form-control">
+                                <input type="date" name="date" class="form-control">
                             </dic>
                             <div class="modal-footer">
                                 <button type="button" class="btn btnAdd" style="margin: 0 0.5rem;" data-dismiss="modal">Close</button>
@@ -86,88 +116,83 @@
                 </div>
                 </div>
             </div>
-
+            {% if notes|length == 0 %}
+                <h3 style="font-size: 2rem; font-family: 'Dancing Script', cursive;font-weight: 600">You don't have any notes</h3> 
+            {% endif %}
+            {% if notes %}
             <ul class="wrap-list">
-                <li class="item">
-                    <div class="btn-alert">
-                        <button class="bell">
-                            <span class="emoji">&#128276;</span>
-                        </button>
-                        <button>09:00</button>
-                    </div>
-                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
-                    <div class="wrap-btn">
-                        <button class="date">18/03/2024</button>
-                        <div class="btn-option">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
+                {% for note in notes %}
+                    <li class="item">
+                        <div class="btn-alert">
+                            <button class="bell">
+                                <a class="emoji" href="{% url 'change-alert' note.id %}">
+                                    {% if note.alert %}
+                                        &#128276;
+                                    {% else %}
+                                        &#x1F515;
+                                    {% endif %}
+                                </a>
+                            </button>
+                            <button>{{note.time}}</button>
                         </div>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="btn-alert">
-                        <button class="bell">
-                            <span class="emoji">&#128276;</span>
-                        </button>
-                        <button>09:00</button>
-                    </div>
-                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
-                    <div class="wrap-btn">
-                        <button class="date">18/03/2024</button>
-                        <div class="btn-option">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
+                        <span class="item-text">{{note.content}}</span>
+                        <div class="wrap-btn">
+                            <button class="date">{{note.date}}</button>
+                            <div class="btn-option">
+                                <button type="button" class="btn edit" data-toggle="modal" data-target="#editNoteModal{{ note.id }}">Edit</button>
+                                <div class="modal fade" id="editNoteModal{{ note.id }}" tabindex="-1" role="dialog" aria-labelledby="editNoteLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" style="font-family: 'Dancing Script', cursive;font-weight: 600;font-size: 2rem" id="editNoteLabel">Edit note</h5>
+                                        <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </span>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form onsubmit="validateForm(event)" action="{% url 'edit-note' note.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <input type="text" name="content" value="{{note.content}}" placeholder="Write note content" class="form-control">
+                                                <input type="date" name="date" value="{{note.date}}" class="form-control"> 
+                                                
+                                                <dic style="display: flex;">
+                                                    <input type="time" name="time" value="{{note.time}}" class="form-control">
+                                                </dic>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btnAdd" style="margin: 0 0.5rem;" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btnAdd" style="margin: 0 0.5rem;">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <script>
+                                            function validateForm(event) {
+                                                event.preventDefault();
+                                                const form = new FormData(event.target);
+                                                const content = form.get('content');
+                                                const date = form.get('date');
+                                                const time = form.get('time');
+                                                const alert_ = form.get('alert');
+                                                if (content === '') {
+                                                    alert('Please enter content')
+                                                    return
+                                                }
+                                                if (alert_ === 'True'){
+                                                    if (time === '' || date === ''){
+                                                        alert('Please enter date and time');
+                                                        return
+                                                    }
+                                                }
+                                                event.target.submit();
+                                            }
+                                        </script>
+                                    </div>
+                                    </div>
+                                </div>
+                                <button class="delete"><a href="{% url 'delete-note' note.id %}">Delete</a></button>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="btn-alert">
-                        <button class="bell">
-                            <span class="emoji">&#128276;</span>
-                        </button>
-                        <button>09:00</button>
-                    </div>
-                    <span class="item-text">learn Django learn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django learn Django learn Django learn Django learn Django learn Djangolearn Djangolearn Django</span>
-                    <div class="wrap-btn">
-                        <button class="date">18/03/2024</button>
-                        <div class="btn-option">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </div>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="btn-alert">
-                        <button class="bell">
-                            <span class="emoji slash">&#x1F515;</span>
-                        </button>
-                        <button>09:00</button>
-                    </div>
-                    <span class="item-text">Learn Docker</span>
-                    <div class="wrap-btn">
-                        <button class="date">18/03/2024</button>
-                        <div class="btn-option">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </div>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="btn-alert">
-                        <button class="bell">
-                            <span class="emoji">&#128276;</span>
-                        </button>
-                        <button>09:00</button>
-                    </div>
-                    <span class="item-text">Learn SQL</span>
-                    <div class="wrap-btn">
-                        <button class="date">18/03/2024</button>
-                        <div class="btn-option">
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                {% endfor %}
                 <div class="pagination">
                     <button class="btn-page"><<</button>
                     <button class="btn-page">2</button>
@@ -175,9 +200,9 @@
                     <button class="btn-page">...</button>
                     <button class="btn-page">5</button>
                     <button class="btn-page">>></button>
-                </div>
+                </div> 
             </ul>
-            
+            {% endif %}
         </div>
     </div>
 </body>

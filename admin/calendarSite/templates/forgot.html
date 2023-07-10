@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Reset Password</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'main.css' %}">
     <link rel="stylesheet" href="{% static 'login.css' %}">
@@ -13,13 +13,13 @@
     <div class="main">
         <div class="from-group">
             <form action="" method="POST">
-                <h1 class="title" style="padding:0 0 1rem 0;"> Login </h1>
+                <h1 class="title" style="padding:0 0 1rem 0;">Verify email</h1>
                 {% csrf_token %}
                 <input type="gmail" name="gmail" placeholder="Gmail" class="form-control">
-                <input type="password" name="password" placeholder="Password" class="form-control">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Send verify email</button>
             </form>
-            <div class="text" style="padding: 0.5rem;"><a href="/forgot">Forgot password</a></div>
+            <span class="text">You already have account?<a href="/login">Login</a></span>
+            <p></p>
             <span class="text">Don't have an account? <a href="/register">Register</a></span>
         </div>
     </div>

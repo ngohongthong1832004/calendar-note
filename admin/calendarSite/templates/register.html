@@ -23,6 +23,11 @@
             </form>
             <span class="text">You already have account?<a href="/login">Login</a></span>
         </div>
+        {% if messages %}
+                {% for message in messages %}
+                    <h3{% if message.tags %} class="{{ message.tags }}"{% endif %} style="font-size: 2rem;color : red ;font-family: 'Dancing Script', cursive;font-weight: 600">{{ message }}</h3>
+                {% endfor %}
+        {% endif %}
     </div>
 </body>
 </html>

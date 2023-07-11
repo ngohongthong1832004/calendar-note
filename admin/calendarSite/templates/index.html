@@ -81,17 +81,38 @@
                 </div>
             </div>
 
-            <form action="">
+            <form action="{% url 'search-note' %}" onsubmit="handleSearch(event)" method="POST">
+                {% csrf_token %}
                 <div class="search">
-                    <input class="from-control"  name="searchValue" type="text" placeholder="Search..." >
+                    <input class="from-control"  name="search" type="text" placeholder="Search..." >
                     <button class="btnSearch">Search</button>
                 </div>
             </form>
+            <script>
+                function handleSearch(e) {
+                    e.preventDefault();
+                    const form = new FormData(e.target);
+                    const search = form.get('search');
+                    if (search.trim() === '') {
+                        // alert('Please enter content')
+                        return
+                    }
+                    e.target.submit();
+                }
+            </script>
             
-            <button  type="button" class="btn filter active">All</button>
-            <button  type="button" class="btn filter">Overdue</button>
-            <button  type="button" class="btn filter">Alert</button>
-            <button  type="button" class="btn filter" data-toggle="modal" data-target="#filterModal">Filler by Day</button>
+            <button  type="button" class="btn filter  {% if current_link == '' %}active{% endif %}">
+                <a href="{% url 'index' %}">All</a>
+            </button>
+            <button  type="button" class="btn filter {% if current_link == 'index-overdue' %}active{% endif %}">
+                <a href="{% url 'index-overdue' %}">Overdue</a>
+            </button>
+            <button  type="button" class="btn filter {% if current_link == 'index-filter-alert' %}active{% endif %}">
+                <a href="{% url 'index-filter-alert' %}">Alert</a>
+            </button>
+            <button  type="button" class="btn filter {% if current_link == 'index-filter-date' %}active{% endif %}" data-toggle="modal" data-target="#filterModal">
+                Filter by day
+            </button>
 
             <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="dilterLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -103,7 +124,7 @@
                     </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="POST">
+                        <form action="{% url 'filter-date' %}" method="POST">
                             {% csrf_token %}
                                 <input type="date" name="date" class="form-control">
                             </dic>
@@ -120,88 +141,140 @@
                 <h3 style="font-size: 2rem; font-family: 'Dancing Script', cursive;font-weight: 600">You don't have any notes</h3> 
             {% endif %}
             {% if notes %}
-            <ul class="wrap-list">
-                {% for note in notes %}
-                    <li class="item">
-                        <div class="btn-alert">
-                            <button class="bell">
-                                <a class="emoji" href="{% url 'change-alert' note.id %}">
-                                    {% if note.alert %}
-                                        &#128276;
-                                    {% else %}
-                                        &#x1F515;
-                                    {% endif %}
-                                </a>
-                            </button>
-                            <button>{{note.time}}</button>
-                        </div>
-                        <span class="item-text">{{note.content}}</span>
-                        <div class="wrap-btn">
-                            <button class="date">{{note.date}}</button>
-                            <div class="btn-option">
-                                <button type="button" class="btn edit" data-toggle="modal" data-target="#editNoteModal{{ note.id }}">Edit</button>
-                                <div class="modal fade" id="editNoteModal{{ note.id }}" tabindex="-1" role="dialog" aria-labelledby="editNoteLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" style="font-family: 'Dancing Script', cursive;font-weight: 600;font-size: 2rem" id="editNoteLabel">Edit note</h5>
-                                        <span type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </span>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form onsubmit="validateForm(event)" action="{% url 'edit-note' note.id %}" method="POST">
-                                                {% csrf_token %}
-                                                <input type="text" name="content" value="{{note.content}}" placeholder="Write note content" class="form-control">
-                                                <input type="date" name="date" value="{{note.date}}" class="form-control"> 
-                                                
-                                                <dic style="display: flex;">
-                                                    <input type="time" name="time" value="{{note.time}}" class="form-control">
-                                                </dic>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btnAdd" style="margin: 0 0.5rem;" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btnAdd" style="margin: 0 0.5rem;">Save</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <script>
-                                            function validateForm(event) {
-                                                event.preventDefault();
-                                                const form = new FormData(event.target);
-                                                const content = form.get('content');
-                                                const date = form.get('date');
-                                                const time = form.get('time');
-                                                const alert_ = form.get('alert');
-                                                if (content === '') {
-                                                    alert('Please enter content')
-                                                    return
-                                                }
-                                                if (alert_ === 'True'){
-                                                    if (time === '' || date === ''){
-                                                        alert('Please enter date and time');
+                <ul class="wrap-list">
+                    {% for note in page_obj  %}
+                        <li class="item">
+                            <div class="btn-alert">
+                                <button class="bell">
+                                    <a class="emoji" href="{% url 'change-alert' note.id %}">
+                                        {% if note.alert %}
+                                            &#128276;
+                                        {% else %}
+                                            &#x1F515;
+                                        {% endif %}
+                                    </a>
+                                </button>
+                                <button>{{note.time}}</button>
+                            </div>
+                            <span class="item-text">{{note.content}}</span>
+                            <div class="wrap-btn">
+                                <button class="date">{{note.date}}</button>
+                                <div class="btn-option">
+                                    <button type="button" class="btn edit" data-toggle="modal" data-target="#editNoteModal{{ note.id }}">Edit</button>
+                                    <div class="modal fade" id="editNoteModal{{ note.id }}" tabindex="-1" role="dialog" aria-labelledby="editNoteLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" style="font-family: 'Dancing Script', cursive;font-weight: 600;font-size: 2rem" id="editNoteLabel">Edit note</h5>
+                                            <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form onsubmit="validateForm(event)" action="{% url 'edit-note' note.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input type="text" name="content" value="{{note.content}}" placeholder="Write note content" class="form-control">
+                                                    <input type="date" name="date" value="{{note.date}}" class="form-control"> 
+                                                    
+                                                    <dic style="display: flex;">
+                                                        <input type="time" name="time" value="{{note.time}}" class="form-control">
+                                                    </dic>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btnAdd" style="margin: 0 0.5rem;" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btnAdd" style="margin: 0 0.5rem;">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <script>
+                                                function validateForm(event) {
+                                                    event.preventDefault();
+                                                    const form = new FormData(event.target);
+                                                    const content = form.get('content');
+                                                    const date = form.get('date');
+                                                    const time = form.get('time');
+                                                    const alert_ = form.get('alert');
+                                                    if (content === '') {
+                                                        alert('Please enter content')
                                                         return
                                                     }
+                                                    if (alert_ === 'True'){
+                                                        if (time === '' || date === ''){
+                                                            alert('Please enter date and time');
+                                                            return
+                                                        }
+                                                    }
+                                                    event.target.submit();
                                                 }
-                                                event.target.submit();
-                                            }
-                                        </script>
+                                            </script>
+                                        </div>
+                                        </div>
                                     </div>
-                                    </div>
+                                    <button class="delete"><a href="{% url 'delete-note' note.id %}">Delete</a></button>
                                 </div>
-                                <button class="delete"><a href="{% url 'delete-note' note.id %}">Delete</a></button>
                             </div>
-                        </div>
-                    </li>
-                {% endfor %}
-                <div class="pagination">
-                    <button class="btn-page"><<</button>
-                    <button class="btn-page">2</button>
-                    <button class="btn-page">3</button>
-                    <button class="btn-page">...</button>
-                    <button class="btn-page">5</button>
-                    <button class="btn-page">>></button>
-                </div> 
-            </ul>
+                        </li>
+                    {% endfor %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <button class="btn-page"><a href="?page={{ page_obj.previous_page_number }}"><<</a></button>
+                        {% endif %}
+                        <div class="wrap-paginations"></div>
+                        <script>
+                            const paginationArr = function (maxPage, eachSide, page) {
+                                let start;
+                                let end;
+                                if ( maxPage < 3 ) {
+                                    start = 1;
+                                    end = maxPage;
+                                } else if (page <= eachSide) {
+                                    start = 1;
+                                    end = eachSide + 1;
+                                } else if (page >= maxPage - eachSide + 2) {
+                                    start = maxPage - eachSide;
+                                    end = maxPage;
+                                } else {
+                                    start = page - eachSide + 1;
+                                    end = page + eachSide - 1;
+                                }
+                                const arr = [];
+                                if (start > 1) {
+                                    arr.push(1);
+                                }
+                                if (start > 2) {
+                                    arr.push("...");
+                                }
+                                for (let i = start; i <= end; i++) {
+                                    arr.push(i);
+                                }
+                                if (end < maxPage - 1) {
+                                    arr.push("...");
+                                }
+                                if (end < maxPage) {
+                                    arr.push(maxPage);
+                                }
+                                return arr;
+                            };
+                            const wrapPaginations = document.querySelector('.wrap-paginations');
+                            let arr = ''
+                            const paginationArr_ = paginationArr({{max_page}}, 2, {{page_obj.number}});
+                            paginationArr_.forEach((num) => {
+                                if (num == "..."){
+                                    arr += `<button class="btn-page"><span class="current-page">${num}</span></button>`
+                                    return
+                                }
+                                if (num == {{page_obj.number}}) {
+                                    arr += `<button class="btn-page active"><span class="current-page">${num}</span></button>`
+                                } else {
+                                    arr += `<button class="btn-page"><a href="?page=${num}">${num}</a></button>`
+                                }
+                            })
+                            wrapPaginations.innerHTML = arr;
+                        </script>
+                        {% if page_obj.has_next %}
+                            <button class="btn-page"><a href="?page={{ page_obj.next_page_number }}">>></a></button>
+                        {% endif %}
+                    </div> 
+                </ul>
             {% endif %}
         </div>
     </div>

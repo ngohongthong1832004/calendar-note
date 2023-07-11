@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,11 +9,41 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
-from django.urls import reverse
+# from django.urls import reverse
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.conf import settings
+from threading import Timer
 from .models import *
+
+
+
+# auto send alert 
+def auto_send_alert():
+    notes = Note.objects.filter(alert=True, date=str(date.today().strftime('%Y-%m-%d')))
+    for note in notes:
+        if note.time == str(datetime.now().strftime("%H:%M")):
+            send_mail(
+                'Alert',
+                'You have a note: ' + note.content,
+                settings.EMAIL_HOST_USER,
+                [note.user.email],
+                fail_silently=False,
+            )
+            note.alert = False
+            note.save()
+    return None 
+
+
+def run_interval():
+    t = Timer(60.0, run_interval)
+    t.start()
+    auto_send_alert()
+
+run_interval()
+
+# Create your views here.
+
 
 class VerifyView(View):
     def post(self, request, *args, **kwargs):

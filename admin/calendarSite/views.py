@@ -24,11 +24,13 @@ def auto_send_alert():
     for note in notes:
         if note.time == str(datetime.now().strftime("%H:%M")):
             send_mail(
-                'Alert',
-                'You have a note: ' + note.content,
+                'Alert from Calendar Note site',
+                'You have a note: ' + note.content + 
+                ' at ' + note.time +
+                ' on ' + note.date ,
                 settings.EMAIL_HOST_USER,
                 [note.user.email],
-                fail_silently=False,
+                 
             )
             note.alert = False
             note.save()

@@ -15,13 +15,86 @@ from django.db.models import Q
 from django.conf import settings
 from threading import Timer
 from .models import *
+import threading
+import time
+from datetime import timedelta
+
+
+
+# ===================================================
+import os
+# import sys
+# from threading import Timer
+# from datetime import datetime, date
+# from django.conf import settings
+# from django.core.mail import send_mail
+from django.core.wsgi import get_wsgi_application
+# import schedule
+
+# # Set the Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'admin.settings')
+
+# Load Django application
+application = get_wsgi_application()
+
+# Ensure Django is initialized
+import django
+django.setup()
+# ==================== Function =====================
 
 
 
 # auto send alert 
-def auto_send_alert():
+# def auto_send_alert():
+#     notes = Note.objects.filter(alert=True, date=str(date.today().strftime('%Y-%m-%d')))
+#     for note in notes:
+#         print(note)
+#         if note.time == str(datetime.now().strftime("%H:%M")):
+#             send_mail(
+#                 'Alert from Calendar Note site',
+#                 'You have a note: ' + note.content + 
+#                 ' at ' + note.time +
+#                 ' on ' + note.date ,
+#                 settings.EMAIL_HOST_USER,
+#                 [note.user.email],
+                 
+#             )
+#             note.alert = False
+#             note.save()
+#     return None 
+
+
+
+# def run_interval():
+#     print("send interval")
+#     t = Timer(60.0, run_interval)
+#     t.start()
+#     auto_send_alert()
+
+
+
+# def get_interval():
+#     target_time = datetime.now() + timedelta(minutes=3)
+#     target_time = target_time.replace(second=0, microsecond=0)
+#     time.sleep((target_time - datetime.now()).seconds)
+#     run_interval()
+#     print("thong oi hen r")
+   
+
+# def start_interval_thread():
+#     thread = threading.Thread(target=get_interval)
+#     thread.start()
+
+# start_interval_thread()
+
+from apscheduler.schedulers.background import BackgroundScheduler
+# from datetime import datetime
+
+def my_periodic_task():
+    # Code for the periodic task goes here
     notes = Note.objects.filter(alert=True, date=str(date.today().strftime('%Y-%m-%d')))
     for note in notes:
+        print(note)
         if note.time == str(datetime.now().strftime("%H:%M")):
             send_mail(
                 'Alert from Calendar Note site',
@@ -34,15 +107,10 @@ def auto_send_alert():
             )
             note.alert = False
             note.save()
-    return None 
 
-
-def run_interval():
-    t = Timer(60.0, run_interval)
-    t.start()
-    auto_send_alert()
-
-run_interval()
+scheduler = BackgroundScheduler()
+scheduler.add_job(my_periodic_task, 'interval', minutes=1)
+scheduler.start()
 
 # Create your views here.
 

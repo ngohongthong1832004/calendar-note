@@ -33,9 +33,34 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Ho_Chi_Minh'
+CELERY_BEAT_SCHEDULE = {
+    'add-every-30-seconds': {
+        'task': 'calendarSite.tasks.add',
+        'schedule': 30.0,
+        'args': (16, 16)
+    },
+}
+
+
+CELERY_BEAT_SCHEDULE = {
+    'run-my-function-view-every-minute': {
+        'task': 'calendarSite.tasks.run_my_function_view',
+        'schedule': 60.0,
+    },
+}
+
+
 
 INSTALLED_APPS = [
     'calendarSite.apps.CalendarsiteConfig', # new
+
+    
     
     'django.contrib.admin',
     'django.contrib.auth',
